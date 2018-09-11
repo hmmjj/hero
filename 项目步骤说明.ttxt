@@ -1,0 +1,8 @@
+1.项目
+    1>使用vue init webpack-simple hero1(项目名称)创建项目
+    2>下载 npm install
+    3>启动项目 npm run dev
+2.配置首页
+    在src目录中的App.vue根组件template写入首页代码；在script中配置组件；在main.js入口中引入bootstrap.css和index.css
+3.提取公共组件
+    头部和sidebar
