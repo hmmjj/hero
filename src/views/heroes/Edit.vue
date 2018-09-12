@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="sub-header">添加英雄</h2>
+        <h2 class="sub-header">修改英雄</h2>
         <form>
             <div class="form-group">
                 <label for="txtName">英雄名称</label>
@@ -10,30 +10,44 @@
                 <label for="txtgender">英雄性别</label>
                 <input v-model="formData.gender" type="text" class="form-control" id="txtgender" placeholder="英雄性别">
             </div>
-            <button type="submit" class="btn btn-success" @click.prevent="add">添加</button>
+            <button type="submit" class="btn btn-success" @click.prevent="edit">修改</button>
         </form>
     </div>
 </template>
 <script>
 export default {
+    props:['id'],
     data() {
         return {
-            formData:{
+            formData: {
                 name: '',
                 gender: ''
             }
         }
     },
+    mounted() {
+        this.loadData();
+    },
     methods: {
-        add() {
-            this.$http.post('heroes',this.formData)
+        loadData() {
+            this.$http.get(`heroes/${this.id}`)
                 .then((response)=>{
                     // console.log(response);
-                    const { data, status} = response;
-                    if(status === 201){
-                       this.$router.push('/heroes');
+                    this.formData = response.data;
+                    
+                })
+                .catch((err)=>{
+                    console.log(err); 
+                })
+        },
+        edit() {
+            this.$http.put(`heroes/${this.id}`,this.formData)
+                .then((response)=>{
+                    // console.log(response);
+                    if(response.status === 200){
+                        this.$router.push('/heroes');
                     }else{
-                        alert('添加失败');
+                        alert('修改失败');
                     }
                     
                 })
@@ -41,7 +55,9 @@ export default {
                     console.log(err);
                 })
         }
-    } 
+       
+    }
+        
 }
 </script>
 <style>

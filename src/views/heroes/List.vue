@@ -21,7 +21,8 @@
                         <td>{{item.name}}</td>
                         <td>{{item.gender}}</td>
                         <td>
-                        <a href="edit.html">编辑</a>
+                        <!-- <a href="javascript:;">编辑</a> -->
+                        <router-link :to="'/heroes/edit/'+item.id">编辑</router-link>
                         &nbsp;&nbsp;
                         <a href="javascript:;" @click.prevent="del(item.id)">删除</a>
                         </td>
@@ -36,7 +37,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     data() {
         return {
@@ -48,7 +48,7 @@ export default {
     },
     methods:{
         loadData() {
-            axios.get('http://localhost:3000/heroes')
+            this.$http.get('heroes')
                 .then((response)=>{
                     // console.log(response);
                     const { data, status } = response;
@@ -64,7 +64,7 @@ export default {
             if(!confirm('您确定要删除吗？')){
                 return;
             }
-            axios.delete(`http://localhost:3000/heroes/${id}`)
+            this.$http.delete(`heroes/${id}`)
                 .then((response)=>{
                     if(response.status === 200){
                         alert('删除成功');
